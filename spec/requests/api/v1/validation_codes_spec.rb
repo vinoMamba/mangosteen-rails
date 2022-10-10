@@ -12,4 +12,12 @@ RSpec.describe "Api::V1::ValidationCodes", type: :request do
     expect(response).to have_http_status(201)
     expect(response.body).to include("验证码已发送")
   end
+  # 60s内不能重复发送
+  it "can't send validation code in 60s" do
+    post "/api/v1/validation_codes", params: { email: "vino@qq.com" }
+    expect(response).to have_http_status(201)
+    expect(response.body).to include("验证码已发送")
+    post "/api/v1/validation_codes", params: { email: "vino@qq.com" }
+    expect(response).to have_http_status(429)
+  end
 end
