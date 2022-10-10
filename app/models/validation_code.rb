@@ -7,6 +7,6 @@ class ValidationCode < ApplicationRecord
     self.code = SecureRandom.random_number.to_s[2..7]
   end
   def send_validation_code
-    UserMailer.welcome_email(self.code).deliver_now
+    UserMailer.welcome_email(self.email).deliver_now
   end
 end
